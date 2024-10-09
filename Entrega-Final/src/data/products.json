@@ -1,0 +1,46 @@
+[
+  {
+    "title": "POLERA URSULA (AQUA)",
+    "description": "La polera Ursula es una aliada perfecta para estar mega cómoda y abrigada y usar tooooda la temporada",
+    "price": "8400",
+    "code": "11",
+    "stock": "3",
+    "status": "true",
+    "category": "remeras",
+    "thumbnail": "whatsapp-image-2024-05-03-at-13-58-24-9331aea7c4f50d198a17147603878428-1024-1024.webp",
+    "id": 2
+  },
+  {
+    "title": "BUZO CALU (CREME)",
+    "description": "Nada más lindo que estar cómoda y calentita con un buzo mega suave como el buzo Calu",
+    "price": "8400",
+    "code": "12",
+    "stock": "2",
+    "status": "true",
+    "category": "buzos",
+    "thumbnail": "whatsapp-image-2024-05-03-at-13-57-17-93ec60c53473fcc3f717147598724975-1024-1024.webp",
+    "id": 3
+  },
+  {
+    "title": "CAMPERA VON (OCRE)",
+    "description": "Es mega combinable y calentita, podes armarte los outfits más cancheros con prendas que ya tenes en tu ropero :) ",
+    "price": "23100",
+    "code": "13",
+    "stock": "2",
+    "status": "true",
+    "category": "camperas",
+    "thumbnail": "whatsapp-image-2024-04-05-at-15-35-14-d59165a8712f89178917146567247904-1024-1024.jpeg",
+    "id": 4
+  },
+  {
+    "title": "PANTALÓN SUMMER (BEIGE)",
+    "description": "El pantalón summer es un básico atemporal, ideal para sumar a tu ropero y tener un denim mega batallero que te va a servir de pilar para crear outfits",
+    "price": "19600",
+    "code": "14",
+    "stock": "5",
+    "status": "true",
+    "category": "pantalones",
+    "thumbnail": "whatsapp-image-2024-04-22-at-14-52-29-1680d754b0c85c2b9017147362214404-640-0.jpeg",
+    "id": 5
+  }
+]

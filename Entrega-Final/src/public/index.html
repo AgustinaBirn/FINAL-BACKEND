@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proyecto</title>
+  </head>
+  <body>
+    <h1>Proyecto</h1>
+
+    <form action="/api/products" method="post" enctype="multipart/form-data">
+      Titulo: <input type="text" name="title" /><br />
+      Descripción: <input type="text" name="description" /><br />
+      Imágen: <input type="file" name="thumbnail" /><br />
+      Precio: <input type="number" name="price" />
+
+      <button type="submit">Enviar</button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,286 @@
+openapi: 3.0.1
+info:
+  title: Ecommerce API
+  description: API para la gestión de productos en el ecommerce.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/products:
+    get:
+      summary: Obtener productos
+      parameters:
+        - name: limit
+          in: query
+          description: Número máximo de productos a devolver
+          schema:
+            type: integer
+            default: 10
+        - name: page
+          in: query
+          description: Número de página
+          schema:
+            type: integer
+            default: 1
+        - name: query
+          in: query
+          description: Filtro de búsqueda para productos
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: Orden de los productos
+          schema:
+            type: integer
+            enum: [1, -1]
+            default: 1
+      responses:
+        '200':
+          description: Productos obtenidos con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: No se obtuvieron los productos
+    post:
+      summary: Crear un nuevo producto
+      description: Creación de un nuevo producto
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                thumbnail:
+                  type: string
+                  format: binary
+                stock:
+                  type: number
+                state:
+                  type: boolean
+                category:
+                  type: string
+                code:
+                  type: string
+                owner:
+                  type: string
+      responses:
+        '200':
+          description: Producto creado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Producto creado con éxito
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Error al crear el producto
+  /api/products/{id}:
+    get:
+      summary: Obtener un producto por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto a obtener
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto obtenido con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Producto obtenido por ID
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Producto no obtenido por ID
+    put:
+      summary: Actualizar un producto por ID
+      description: Actualizar un producto específico por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto a modificar
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                thumbnail:
+                  type: string
+                stock:
+                  type: number
+                state:
+                  type: boolean
+                category:
+                  type: string
+                code:
+                  type: string
+                owner:
+                  type: string
+      responses:
+        '200':
+          description: Producto actualizado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Producto actualizado
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Error al actualizar producto
+    delete:
+      summary: Eliminar un producto por ID
+      description: Eliminar un producto específico por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto a eliminar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Producto eliminado
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Error al eliminar el producto
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        thumbnail:
+          type: string
+        stock:
+          type: number
+        state:
+          type: boolean
+        category:
+          type: string
+        code:
+          type: string
+        owner:
+          type: string
+      required:
+        - title
+        - price
+        - stock
+        - code
+    ProductId:
+      type: string
+

@@ -1,0 +1,57 @@
+<div>
+  <h1>Carrito</h1>
+  <div id="productsList"  style="display: flex; justify-content: center; flex-wrap: wrap;">
+    {{#each data.products}}
+
+      <div class="card" id="card" style="width: 18rem; margin: 25px;">
+        <img src=/static/img/{{this._id.thumbnail}}
+          class="card-img-top"
+          alt="imagen{{this._id.id}}"
+        />
+        <div class="card-body"  style="display: flex; justify-content: center; flex-direction:column">
+          <h5 class="card-title" style="text-align: center;">{{this._id.title}}</h5>
+          <p class="card-text" style="text-align: center;">{{this._id.description}}</p>
+          <p class="card-price" style="text-align: center;">${{this._id.price}}</p>
+        </div>
+        <button type="button" onclick="removeProduct('{{../cid}}', '{{this._id._id}}')" style="color: darkred;">Eliminar</button>
+      </div>
+
+    {{/each}}
+  </div>
+
+  <form action="/checkout" method="get" style="display: flex; justify-content: center; margin-block-end: 25px">
+    <button type="submit" class="btn btn-primary">Comprar</button>
+  </form>
+
+</div>
+
+<script>
+  async function removeProduct(cid, pid) {
+    try {
+      const response = await fetch(`/api/carts/${cid}/products/${pid}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        window.location.href = `/carts/${cid}`;
+      } else {
+        console.log("Error al eliminar el producto del carrito");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  }
+</script>
+
+<script
+  src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+  integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+  crossorigin="anonymous"
+></script>
+
+<script>
+
+  const serverAddress = "ws://localhost:8080"; 
+  const socketClient = io(serverAddress);
+
+</script>

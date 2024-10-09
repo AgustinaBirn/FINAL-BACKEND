@@ -1,0 +1,64 @@
+<div>
+
+  <h1>Lista de productos realtime</h1>
+
+  <div id="productsList"  style="display: flex; justify-content: center;">
+
+    {{#each docs}}
+
+      <div class="card" id="card" style="width: 18rem; margin: 25px;">
+
+        <img src="/static/img/{{this.thumbnail}}"
+
+          class="card-img-top"
+
+          alt="imagen{{this.title}}"
+
+        />
+
+        <div class="card-body"  style="display: flex; justify-content: center; flex-direction:column">
+
+          <h5 class="card-title" style="text-align: center;">{{this.title}}</h5>
+
+          <p class="card-text" style="text-align: center;">{{this.description}}</p>
+
+        </div>
+
+      </div>
+
+    {{/each}}
+
+  </div>
+
+</div>
+
+<script
+  src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+  integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+  crossorigin="anonymous"
+></script>
+
+<script>
+  const productsList = document.getElementById("productsList"); 
+  const card = document.getElementById("card");
+
+  const serverAddress = "ws://localhost:8080"; 
+  const socketClient = io(serverAddress);
+
+  socketClient.on("productDeleted", data => { 
+    {{!-- window.location.reload(); --}}
+    console.log("Aviso de producto eliminado");
+
+    
+  }); 
+  
+  
+  socketClient.on("newProduct", data =>
+  { productsList.innerHTML += 
+  `<div class="card" style="width: 18rem; margin: 25px"> <img
+  src=static/img/${data.thumbnail} class="card-img-top" alt=imagen${data.id}>
+  <div class="card-body" style="display: flex; justify-content: center; flex-direction:column"> <h5 class="card-title" style="text-align: center;">${data.title}</h5>
+  <p class="card-text" style="text-align: center;">${data.description}</p> </div> </div>` })
+
+  
+</script>

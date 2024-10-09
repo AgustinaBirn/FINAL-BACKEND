@@ -1,0 +1,72 @@
+<div>
+  <h1>Finalizar Compra</h1>
+  <form id="checkoutForm" style="display: flex; flex-direction: column; align-items: center; margin: 20px;">
+    <div style="margin-bottom: 20px;">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="address">Dirección:</label>
+      <input type="text" id="address" name="address" required />
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="phone">Celular:</label>
+      <input type="tel" id="phone" name="phone" required />
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <label for="paymentMethod">Método de Pago:</label>
+      <select id="paymentMethod" name="paymentMethod" required>
+        <option value="efectivo">Efectivo</option>
+        <option value="transferencia">Transferencia</option>
+        <option value="tarjeta">Tarjeta</option>
+      </select>
+    </div>
+
+    <h3>Detalle de Compra</h3>
+    <ul>
+      {{#each cart.products}}
+        <li>{{this._id.title}} - ${{this._id.price}}</li>
+      {{/each}}
+    </ul>
+
+    <h3>Total: ${{totalPrice}}</h3>
+
+    <button type="submit">Finalizar Compra</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('checkoutForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const form = event.target;
+    
+    const formData = {
+      email: form.email.value,
+      address: form.address.value,
+      phone: form.phone.value,
+      paymentMethod: form.paymentMethod.value,
+    };
+
+    try {
+      const response = await fetch('/api/carts/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert('Compra finalizada. Recibirás un mensaje con los detalles.');
+        window.location.href = '/products'; 
+      } else {
+        console.error('Error en el proceso de compra');
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+  });
+</script>

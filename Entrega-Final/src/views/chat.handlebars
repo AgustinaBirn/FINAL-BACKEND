@@ -1,0 +1,82 @@
+<div>
+  <h1>Sistema chat websocket</h1>
+  <div>
+    <input
+      type="text"
+      name="chat"
+      id="chatBox"
+      placeholder="Ingrese un mensaje"
+      style="width: 300px;"
+    />
+    <br />
+    <button id="button" >Enviar</button>
+  </div>
+
+  <div>
+    <p id="chatList"></p>
+  </div>
+
+</div>
+
+{{! <script src="/socket.io/socket.io.js"></script> }}
+<script
+  src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+  integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+  crossorigin="anonymous"
+></script>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.8/dist/sweetalert2.all.min.js"
+></script>
+
+<script type="module">
+  const wsServer = "ws://localhost:8080"; 
+  const socketClient = io(wsServer);
+  const chatBox = document.getElementById("chatBox"); 
+  const chatList = document.getElementById("chatList"); 
+  const button = document.getElementById("button");
+
+  socketClient.on("newClientConnected", data => {
+    console.log(data);
+  })
+
+  socketClient.on("chatLog", data => {
+    for (let i = 0 ; i < data.length; i++){
+      chatList.innerHTML += `<br>[${data[i].user}]: ${data[i].message}`;
+    }
+  })
+ 
+  socketClient.on("messageArrived", data => { 
+    chatList.innerHTML +=  `<br>[${data.user}]: ${data.message}`
+    }); 
+
+
+  const askForUser = async () => { 
+    const result = await Swal.fire({ 
+      title: 'Bienvenido', 
+      input: 'text',
+      text: 'Ingrese su email', 
+      inputValidator: value => { 
+        return !value && 'Debe ingresar su email' }, 
+        allowOutsideClick: false 
+        }); 
+
+      return result.value 
+    }; 
+  let user = await askForUser(); 
+  console.log(user, Error)
+
+
+  const sendMessage = async () => { 
+
+    if(chatBox.value !== ""){ 
+      socketClient.emit("newMessage",{user: user, message: chatBox.value});
+      console.log("Mensaje enviado"); 
+      chatBox.value="";
+    } };  
+  
+  button.addEventListener("click", sendMessage)
+
+</script>
+
+

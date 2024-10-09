@@ -1,0 +1,329 @@
+openapi: 3.0.1
+info:
+  title: Ecommerce API
+  description: API para la gestión de carritos en el ecommerce.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/carts:
+    get:
+      summary: Obtener carritos
+      parameters:
+        - name: limit
+          in: query
+          description: Número máximo de carritos a devolver
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Carritos obtenidos con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Carts"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Error al obtener los carritos
+    post:
+      summary: Crear un nuevo carrito
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: El carrito es un objeto con un array de productos que le pertenecen
+              properties:
+                products:
+                  type: array
+                  description: array de los productos que pertenecen a un carrito específico
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: ID del producto que pertenece al carrito
+                      quantity:
+                        type: integer
+                        description: Cantidad de unidades del producto en particular
+      responses:
+        '200':
+          description: Carrito creado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Carrito creado
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Error al crear carrito
+  /api/carts/{id}:
+    get:
+      summary: Obtener un carrito por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del carrito a obtener
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrito obtenido con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  payload:
+                    $ref: "#/components/schemas/Cart"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Error al obtener el carrito por ID
+    delete:
+      summary: Eliminar todos los productos de un carrito por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del carrito a eliminar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Productos eliminados con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Carrito eliminado
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: error
+                  error:
+                    type: string
+                    example: Error al eliminar el carrito 
+  /api/carts/{id}/products/{pid}:
+    post:
+      summary: Agregar un producto a un carrito
+      description: Producto que se desea agregar a un carrito en específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del carrito al que desea agregar un producto 
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se desea agregar al carrito
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto agregado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Producto agregado al carrito con éxito
+          
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Error al agregar el producto al carrito
+    put:
+      summary: Actualizar la cantidad de un producto
+      description: Se actualiza la cantidad de unidades de un producto en específico de un carrito en particular
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del carrito que se quiere actualizar
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se desea modificar su cantidad
+          schema:
+            type: string
+        - name: quantity
+          in: path
+          required: true
+          description: Cantidad de las unidades de un producto específico que se desea modificar
+          schema:
+            type: integer
+      requestBody:
+        description: Cantidad de unidades que se desea modificar de un producto específico en un carrito
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Cart"
+      responses:
+        '200':
+          description: Producto actualizado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Cantidad del producto modificada con éxito
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Error al modificar la cantidad del producto
+    delete:
+      summary: Eliminar un producto de un carrito
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que quiere eliminar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado con éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Producto eliminado con éxito
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Error al eliminar el producto
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _user_id:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              quantity:
+                type: integer
+      required:
+        - _user_id
+        - products
