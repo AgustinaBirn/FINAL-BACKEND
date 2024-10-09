@@ -13,6 +13,7 @@ import { cpus } from "os";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
 import methodOverride from 'method-override';
+import dotenv from 'dotenv';
 
 import config from "./config.js";
 import productsRoutes from "./routes/products.routes.js";
@@ -37,14 +38,14 @@ import addLogger from "./services/logger.js";
 //   });
 // } else {
 //   try {
+
+    dotenv.config();  
+
     const app = express();
     const fileStorage = FileStore(session);
-    // const messages = [];
-    
     
     
     const httpServer = app.listen(config.PORT, async () => {
-      // await mongoose.connect(config.MONGODB_URI);
     
       MongoSingleton.getInstance();
     
