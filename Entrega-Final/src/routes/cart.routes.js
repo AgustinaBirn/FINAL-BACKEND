@@ -24,7 +24,7 @@ const transport = nodemailer.createTransport({
   }
 });
 
-// const twilioClient = twilio(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN)
+const twilioClient = twilio(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN)
 
 router.get("/mail", async (req, res) => {
   try{
@@ -41,19 +41,19 @@ router.get("/mail", async (req, res) => {
   }
 });
 
-// router.get("/sms", async (req, res) => {
-//   try{
-//     let confirmation = await twilioClient.messages.create({
-//       body: "Mensaje envido con Twilio", 
-//       from: config.TWILIO_PHONE,
-//       to: "+543512510631",
-//     });
+router.get("/sms", async (req, res) => {
+  try{
+    let confirmation = await twilioClient.messages.create({
+      body: "Mensaje envido con Twilio", 
+      from: config.TWILIO_PHONE,
+      to: "+543512510631",
+    });
 
-//     res.status(200).send({ status: "1", payload:  confirmation});
-//   } catch(err){
-//     res.status(401).send({ status: "1", payload: err.message });
-//   }
-// });
+    res.status(200).send({ status: "1", payload:  confirmation});
+  } catch(err){
+    res.status(401).send({ status: "1", payload: err.message });
+  }
+});
 
 router.get("/", async (req, res) => {
   const limit = +req.query.limit || 0;
@@ -102,12 +102,12 @@ router.post("/:id/products/:pid", verifyToken, handlePolicies(["self"]), async (
 
   const cid = req.params.id;
   const pid = req.params.pid;
+  const user = req.session.user;
 
   if (!req.session.user) {
     return res.status(401).send("Usuario no autenticado.");
   }
 
-  const user = req.session.user;
 
   try {
     
