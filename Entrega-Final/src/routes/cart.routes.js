@@ -24,7 +24,7 @@ const transport = nodemailer.createTransport({
   }
 });
 
-const twilioClient = twilio(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN)
+const twilioClient = require("twilio")(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN)
 
 router.get("/mail", async (req, res) => {
   try{
