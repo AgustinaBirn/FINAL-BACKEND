@@ -6,6 +6,7 @@ const router = Router();
 
 const generateFakeProducts = async (qty) => {
     const products = [];
+    const { faker } = require('@faker-js/faker');
     for(let i = 0; i < qty; i++ ){
         const title = faker.commerce.productName();
         const description = faker.commerce.productDescription();
